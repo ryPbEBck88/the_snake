@@ -43,15 +43,24 @@ clock = pygame.time.Clock()
 
 
 # Тут опишите все классы игры.
-...
+class GameObject:
+    def __init__(self):
+        self.position = SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
+        self.body_color = ...
+
+class Apple(GameObject):
+    pass
+
+class Snake(GameObject):
+    pass
 
 
 def main():
     # Тут нужно создать экземпляры классов.
     ...
 
-    # while True:
-    #     clock.tick(SPEED)
+    while True:
+        clock.tick(SPEED)
 
         # Тут опишите основную логику игры.
         # ...
