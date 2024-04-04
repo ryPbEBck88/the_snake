@@ -1,5 +1,4 @@
 from random import choice, randint
-
 import pygame
 
 # Инициализация PyGame:
@@ -44,15 +43,21 @@ clock = pygame.time.Clock()
 
 # Тут опишите все классы игры.
 class GameObject:
-    def __init__(self):
-        self.position = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
-        self.body_color = None
-    
+    """Parent class for game objects."""
+
+    def __init__(self, position, body_color):
+        self.position = position
+        self.body_color = body_color
+
     def draw(self):
+        """Preparation of a method for drawing 
+        an object on the playing field"""
         pass
 
+
 class Apple(GameObject):
-    pass
+    ...
+
 
 class Snake(GameObject):
     pass
