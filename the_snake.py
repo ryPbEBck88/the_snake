@@ -39,7 +39,7 @@ SPEED = 7
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
 
 # Заголовок окна игрового поля:
-pygame.display.set_caption('Змейка')
+pygame.display.set_caption(f'Змейкa Скорость: {SPEED} Длина змеи: {1}')
 
 # Настройка времени:
 clock = pygame.time.Clock()
@@ -162,6 +162,8 @@ def handle_keys(game_object):
                 SPEED += 1
             elif event.key == pygame.K_MINUS and SPEED > 1:
                 SPEED -= 1
+            # elif event.key == pygame.K_ESCAPE:
+            #     pygame.quit()
 
 
 def erase_the_unnecessary(coordinates: list) -> None:
@@ -199,6 +201,8 @@ def main():
             snake.reset()
 
         snake.draw()
+        pygame.display.set_caption(f'Змейкa Скорость: {SPEED} '
+                                   f'Длина змеи: {len(snake.positions)}')
         pygame.display.update()
 
 
