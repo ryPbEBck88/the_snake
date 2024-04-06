@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, choice
 
 import pygame
 
@@ -44,6 +44,10 @@ pygame.display.set_caption(f'Змейкa Скорость: {SPEED} Длина з
 # Настройка времени:
 clock = pygame.time.Clock()
 
+# Свободные ячейки:
+free_cells = {(i, j) for i in range(0, SCREEN_WIDTH, GRID_SIZE)
+              for j in range(0, SCREEN_HEIGHT, GRID_SIZE)}
+
 
 # Тут опишите все классы игры.
 class GameObject:
@@ -63,16 +67,13 @@ class GameObject:
 class Apple(GameObject):
     """Дочерний класс игрового объекта - Яблоко."""
 
-    def __init__(self):
+    def __init__(self, cells):
         super().__init__(body_color=APPLE_COLOR)
-        self.randomize_position()
+        self.randomize_position(list(cells))
 
-    def randomize_position(self):
+    def randomize_position(self, cells):
         """Рандомное местоположение яблока"""
-        self.position = (
-            randint(0, GRID_WIDTH - 1) * GRID_SIZE,
-            randint(0, GRID_HEIGHT - 1) * GRID_SIZE
-        )
+        self.position = choice(cells)
 
     def draw(self):
         """Отрисовка яблока"""
@@ -138,7 +139,12 @@ class Snake(GameObject):
 
     def reset(self):
         """Начальное состояние змейки, после столкновения с собой."""
+        erase_the_unnecessary(self.positions + [self.last])
         self.__init__()
+
+
+class Speed():
+    ...
 
 
 def handle_keys(game_object):
@@ -162,8 +168,8 @@ def handle_keys(game_object):
                 SPEED += 1
             elif event.key == pygame.K_MINUS and SPEED > 1:
                 SPEED -= 1
-            # elif event.key == pygame.K_ESCAPE:
-            #     pygame.quit()
+            elif event.key == pygame.K_ESCAPE:
+                pygame.quit()
 
 
 def erase_the_unnecessary(coordinates: list) -> None:
@@ -176,7 +182,7 @@ def erase_the_unnecessary(coordinates: list) -> None:
 def main():
     """Главная функция."""
     # Тут нужно создать экземпляры классов.
-    apple = Apple()
+    apple = Apple(free_cells)
     snake = Snake()
     apple.draw()
     snake.draw()
@@ -186,10 +192,11 @@ def main():
         handle_keys(snake)
         snake.update_direction()
         snake.move()
+        new_free_cells = free_cells - set(snake.positions)
 
         # Проверяем есть ли яблоко
         if apple.position in snake.positions:
-            apple.__init__()
+            apple.__init__(new_free_cells)
             apple.draw()
             snake.positions.append(snake.last)
         else:
@@ -197,7 +204,6 @@ def main():
             if snake.last:
                 erase_the_unnecessary([snake.last])
         if snake.get_head_position() in snake.positions[1:]:
-            erase_the_unnecessary(snake.positions + [snake.last])
             snake.reset()
 
         snake.draw()
