@@ -1,4 +1,4 @@
-from random import randint, choice
+from random import choice
 
 import pygame
 
@@ -143,10 +143,6 @@ class Snake(GameObject):
         self.__init__()
 
 
-class Speed():
-    ...
-
-
 def handle_keys(game_object):
     """Обрабатывает нажатия клавиш, чтобы изменить направление движения змеи"""
     global SPEED  # знаю что не желательно, но первый раз хочу попробовать
@@ -168,8 +164,8 @@ def handle_keys(game_object):
                 SPEED += 1
             elif event.key == pygame.K_MINUS and SPEED > 1:
                 SPEED -= 1
-            elif event.key == pygame.K_ESCAPE:
-                pygame.quit()
+            # elif event.key == pygame.K_ESCAPE:
+            #     pygame.quit()
 
 
 def erase_the_unnecessary(coordinates: list) -> None:
