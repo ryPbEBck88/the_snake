@@ -62,10 +62,8 @@ class GameObject:
         self.reset()
 
     def draw(self, pos):
-        """Отрисовка игрового объекта."""
-        rect = (pygame.Rect(pos, (GRID_SIZE, GRID_SIZE)))
-        pygame.draw.rect(screen, self.body_color, rect)
-        pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
+        """Абстрактный метод, отрисовки игрового объекта."""
+        raise NotImplementedError
 
     def randomize_position(self, pos=[CENTER_BOARD]) -> None:
         """Рандомное местоположение яблока."""
@@ -107,6 +105,12 @@ class Snake(GameObject):
         self.positions = None
         self.length = None
         self.reset()
+
+    def draw(self, pos):
+        """Отрисовка игрового объекта."""
+        rect = (pygame.Rect(pos, (GRID_SIZE, GRID_SIZE)))
+        pygame.draw.rect(screen, self.body_color, rect)
+        pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
     def update_direction(self):
         """Метод обновления направления после нажатия на кнопку."""
@@ -169,6 +173,12 @@ class Stone(GameObject):
     def __init__(self):
         super().__init__(body_color=GREY)
         self.reset()
+
+    def draw(self, pos):
+        """Отрисовка игрового объекта."""
+        rect = (pygame.Rect(pos, (GRID_SIZE, GRID_SIZE)))
+        pygame.draw.rect(screen, self.body_color, rect)
+        pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 
 def handle_keys(game_object):
